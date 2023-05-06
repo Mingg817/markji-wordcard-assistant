@@ -15,4 +15,5 @@ license = {file = "LICENSE"}
 dependencies = [
     "requests",
     "python-dotenv",
+    "pyperclip"
 ]
