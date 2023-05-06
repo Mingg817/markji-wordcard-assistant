@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "markji_wordcard_assistant"
+version = "0.1"
+authors = [
+    {name = "LiYiMing"},
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+
+dependencies = [
+    "requests",
+    "python-dotenv",
+]
