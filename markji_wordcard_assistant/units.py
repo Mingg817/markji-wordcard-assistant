@@ -8,10 +8,10 @@ load_dotenv()
 
 
 def requestAudioID(word: str, locale: str = "en-GB") -> str:
-    return f"[Audio#ID/{getIdFromUrl(tts(word, locale))}#]"
+    return f"[Audio#ID/{_getIdFromUrl(_tts(word, locale))}#]"
 
 
-def tts(word: str, locale: str = "en-GB"):
+def _tts(word: str, locale: str = "en-GB"):
     url = "https://www.markji.com/api/v1/files/tts"
 
     payload = json.dumps({
@@ -44,7 +44,7 @@ def tts(word: str, locale: str = "en-GB"):
     return json.loads(response.text)['data']['url']
 
 
-def getIdFromUrl(wordUrl: str):
+def _getIdFromUrl(wordUrl: str):
     url = "https://www.markji.com/api/v1/files/url"
 
     payload = json.dumps({"url": wordUrl})
