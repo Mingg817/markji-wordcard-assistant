@@ -27,7 +27,7 @@ def requestAudioID(word: str, locale: str = "en-GB", by: str = "default") -> str
             codes = {"en-GB": 1, "en-US": 2}
             return f"[Audio#ID/{_uploadVoice(_getYoudaoVoice(word, codes[locale]))}#]"
 
-    except Exception as e:
+    except ValueError as e:
         print(e)
         sys.exit(1)
 
@@ -35,7 +35,7 @@ def requestAudioID(word: str, locale: str = "en-GB", by: str = "default") -> str
 def _tts(word: str, locale: str = "en-GB"):
     token = os.getenv("TOKEN")
     if token is None:
-        raise TypeError("【错误】TOKEN未提供")
+        raise ValueError("【错误】TOKEN未提供")
     url = "https://www.markji.com/api/v1/files/tts"
 
     payload = json.dumps({
@@ -47,18 +47,6 @@ def _tts(word: str, locale: str = "en-GB"):
         ]
     })
     headers = {
-        'authority': 'www.markji.com',
-        'accept': 'application/json, text/plain, */*',
-        'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-        'content-type': 'application/json',
-        'dnt': '1',
-        'origin': 'https://www.markji.com',
-        'sec-ch-ua': '"Chromium";v="112", "Microsoft Edge";v="112", "Not:A-Brand";v="99"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"macOS"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'same-origin',
         'token': token,
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68'
@@ -78,18 +66,6 @@ def _getIdFromUrl(wordUrl: str):
 
     payload = json.dumps({"url": wordUrl})
     headers = {
-        'authority': 'www.markji.com',
-        'accept': 'application/json, text/plain, */*',
-        'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-        'content-type': 'application/json',
-        'dnt': '1',
-        'origin': 'https://www.markji.com',
-        'sec-ch-ua': '"Chromium";v="112", "Microsoft Edge";v="112", "Not:A-Brand";v="99"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"macOS"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'same-origin',
         'token': token,
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68'
     }
@@ -105,19 +81,7 @@ def _getYoudaoVoice(word: str, types: int = 1):
 
     payload = {}
     headers = {
-        'Accept': '*/*',
-        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-        'Connection': 'keep-alive',
-        'DNT': '1',
-        'Range': 'bytes=0-',
-        'Referer': 'https://www.youdao.com/',
-        'Sec-Fetch-Dest': 'audio',
-        'Sec-Fetch-Mode': 'no-cors',
-        'Sec-Fetch-Site': 'same-site',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68',
-        'sec-ch-ua': '"Chromium";v="112", "Microsoft Edge";v="112", "Not:A-Brand";v="99"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"macOS"'
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68'
     }
 
     response = requests.request("GET", url, headers=headers, data=payload)
@@ -129,7 +93,7 @@ def _getYoudaoVoice(word: str, types: int = 1):
 def _uploadVoice(filepath: str):
     token = os.getenv("TOKEN")
     if token is None:
-        raise TypeError("【错误】TOKEN未提供")
+        raise ValueError("【错误】TOKEN未提供")
 
     url = "https://www.markji.com/api/v1/files"
 
@@ -138,17 +102,6 @@ def _uploadVoice(filepath: str):
         ('file', (os.path.basename(filepath), open(filepath, 'rb'), 'audio/mpeg'))
     ]
     headers = {
-        'authority': 'www.markji.com',
-        'accept': 'application/json, text/plain, */*',
-        'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-        'dnt': '1',
-        'origin': 'https://www.markji.com',
-        'sec-ch-ua': '"Chromium";v="112", "Microsoft Edge";v="112", "Not:A-Brand";v="99"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"macOS"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'same-origin',
         'token': token,
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68'
     }
