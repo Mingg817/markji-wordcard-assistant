@@ -8,11 +8,13 @@ from . import units
 async def trans(filepath: str):
     transed = []
     with open(filepath, "r") as f:
-        for word in f:
+        for line in f:
+            line = line.split("\t")
+            word = line[0]
             word = word.strip()
             if (word == ""):
                 continue
-            tmp = [units.requestAudioID(word), "---", word]
+            tmp = [units.requestAudioID(word), "---", "\n".join(line)]
             transed.append("\n".join(tmp))
             await asyncio.sleep(1)
     result = "\n\n".join(transed)
