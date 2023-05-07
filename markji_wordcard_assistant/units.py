@@ -128,6 +128,8 @@ def _getYoudaoVoice(word: str, types: int = 1):
 
 def _uploadVoice(filepath: str):
     token = os.getenv("TOKEN")
+    if token is None:
+        raise TypeError("【错误】TOKEN未提供")
 
     url = "https://www.markji.com/api/v1/files"
 
@@ -152,6 +154,8 @@ def _uploadVoice(filepath: str):
     }
 
     response = requests.request("POST", url, headers=headers, data=payload, files=files)
+    if (response.status_code == 401):
+        raise ValueError("【错误】TOKEN错误，请检查")
 
     return json.loads(response.text)['data']['file']['id']
 
