@@ -18,7 +18,7 @@ parser.add_argument("-v", "--voice",
 parser.add_argument("-b", "--by",
                     metavar='',
                     default="default",
-                    help="[可选]指定选定的语音来源,默认default,可选youdao", )
+                    help="[可选]指定选定的语音来源,默认default,可选youdao edge", )
 args = parser.parse_args()
 
 try:

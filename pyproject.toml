@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "markji_wordcard_assistant"
-version = "0.2"
+version = "0.3"
 authors = [
     {name = "LiYiMing"},
 ]
@@ -15,5 +15,6 @@ license = {file = "LICENSE"}
 dependencies = [
     "requests",
     "python-dotenv",
-    "pyperclip"
+    "pyperclip",
+    "edge_tts"
 ]

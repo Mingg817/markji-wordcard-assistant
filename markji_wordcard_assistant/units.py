@@ -3,13 +3,14 @@ import os
 import sys
 import tempfile
 
+import edge_tts
 import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
-def requestAudioID(word: str, locale: str = "en-GB", by: str = "default") -> str:
+async def requestAudioID(word: str, locale: str = "en-GB", by: str = "default") -> str:
     """
 
     :param word:
@@ -26,6 +27,8 @@ def requestAudioID(word: str, locale: str = "en-GB", by: str = "default") -> str
         if by == "youdao":
             codes = {"en-GB": 1, "en-US": 2}
             return f"[Audio#ID/{_uploadVoice(_getYoudaoVoice(word, codes[locale]))}#]"
+        if by == "edge":
+            return f"[Audio#ID/{_uploadVoice(await _get_edge_tts(word))}#]"
 
     except ValueError as e:
         print(e)
@@ -33,9 +36,9 @@ def requestAudioID(word: str, locale: str = "en-GB", by: str = "default") -> str
 
 
 def _tts(word: str, locale: str = "en-GB"):
-    token = os.getenv("TOKEN")
+    token = os.getenv("MARKJI_TOKEN")
     if token is None:
-        raise ValueError("【错误】TOKEN未提供")
+        raise ValueError("【错误】MARKJI_TOKEN未提供")
     url = "https://www.markji.com/api/v1/files/tts"
 
     payload = json.dumps({
@@ -56,12 +59,12 @@ def _tts(word: str, locale: str = "en-GB"):
     if (response.status_code == 400):
         raise ValueError("【错误】请检查输入的单词文件是否有问题")
     if (response.status_code == 401):
-        raise ValueError("【错误】TOKEN错误，请检查")
+        raise ValueError("【错误】MARKJI_TOKEN错误，请检查")
     return json.loads(response.text)['data']['url']
 
 
 def _getIdFromUrl(wordUrl: str):
-    token = os.getenv("TOKEN")
+    token = os.getenv("MARKJI_TOKEN")
     url = "https://www.markji.com/api/v1/files/url"
 
     payload = json.dumps({"url": wordUrl})
@@ -90,10 +93,17 @@ def _getYoudaoVoice(word: str, types: int = 1):
     return temp_file.name
 
 
+async def _get_edge_tts(text: str, voice: str = "en-GB-SoniaNeural", rate: str = "+25%") -> str:
+    communicate = edge_tts.Communicate(text=text, voice=voice, rate=rate)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp_file:
+        await communicate.save(tmp_file.name)
+        return tmp_file.name
+
+
 def _uploadVoice(filepath: str):
-    token = os.getenv("TOKEN")
+    token = os.getenv("MARKJI_TOKEN")
     if token is None:
-        raise ValueError("【错误】TOKEN未提供")
+        raise ValueError("【错误】MARKJI_TOKEN未提供")
 
     url = "https://www.markji.com/api/v1/files"
 
@@ -108,7 +118,7 @@ def _uploadVoice(filepath: str):
 
     response = requests.request("POST", url, headers=headers, data=payload, files=files)
     if (response.status_code == 401):
-        raise ValueError("【错误】TOKEN错误，请检查")
+        raise ValueError("【错误】MARKJI_TOKEN错误，请检查")
 
     return json.loads(response.text)['data']['file']['id']
 
