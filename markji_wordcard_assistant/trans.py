@@ -19,7 +19,7 @@ async def trans(filepath: str, locale: str = "en-GB", by: str = "default"):
             word = line[0]
             if (word == ""):
                 continue
-            if (word.isdigit()):
+            while word.isdigit():
                 line.pop(0)
                 word = line[0]
             tmp = [await units.requestAudioID(word=word, locale=locale, by=by), "---", "\n".join(line)]

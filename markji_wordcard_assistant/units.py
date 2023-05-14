@@ -52,7 +52,8 @@ def _tts(word: str, locale: str = "en-GB"):
     headers = {
         'token': token,
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
-                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68'
+                      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68',
+        'Content-Type': 'application/json'
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -70,7 +71,8 @@ def _getIdFromUrl(wordUrl: str):
     payload = json.dumps({"url": wordUrl})
     headers = {
         'token': token,
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68'
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68',
+        'Content-Type': 'application/json'
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
