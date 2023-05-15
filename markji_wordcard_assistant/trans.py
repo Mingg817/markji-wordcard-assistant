@@ -14,14 +14,15 @@ async def trans(filepath: str, locale: str = "en-GB", by: str = "default"):
     tmpFile = open(tmpPath, "w")
     with open(filepath, "r") as f:
         for line in f:
-            line = [i.strip() for i in line.split("\t")]
+            splitChar = '\t' if '#' not in line else '#'
+            line = [i.strip() for i in line.split(splitChar)]
             word = line[0]
             if (word == ""):
                 continue
-            if (word.isdigit()):
+            while word.isdigit():
                 line.pop(0)
                 word = line[0]
-            tmp = [units.requestAudioID(word=word, locale=locale, by=by), "---", "\n".join(line)]
+            tmp = [await units.requestAudioID(word=word, locale=locale, by=by), "---", "\n".join(line)]
             transed.append("\n".join(tmp))
             tmpFile.write(f"{transed[-1]}\n\n")
             tmpFile.flush()
