@@ -15,9 +15,11 @@ license = {file = "LICENSE"}
 
 dependencies = [
     "requests",
+    "httpx[socks]",
     "python-dotenv",
     "pyperclip",
     "edge_tts",
+    "openai>=1.2.0",
     "elevenlabs",
     "fastapi",
     "uvicorn[standard]",

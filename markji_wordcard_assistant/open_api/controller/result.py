@@ -8,6 +8,8 @@ class R(BaseModel):
 
     @staticmethod
     def success(data: dict = None):
+        if data is None:
+            data = dict()
         return R(status="success", data=data)
 
     @staticmethod

@@ -1,7 +1,7 @@
 import tempfile
 
 
-def tts(word: str, types: int = 1):
+def tts(word: str, *, types: int = 1):
     import requests
 
     url = f"https://dict.youdao.com/dictvoice?audio={word}&type={types}"

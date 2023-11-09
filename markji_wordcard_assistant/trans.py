@@ -25,7 +25,7 @@ async def trans(filepath: str, locale: str = "en-GB", by: str = "default", speed
             while word.isdigit():
                 line.pop(0)
                 word = line[0]
-            tmp = [await units.requestAudioID(word=word, locale=locale, by=by, speed=speed), "---", "\n".join(line)]
+            tmp = [await units.request_audio_id_old(word=word, locale=locale, by=by, speed=speed), "---", "\n".join(line)]
             s = "\n".join(tmp)
             tmpFile.write(f"{s}\n\n")
             tmpFile.flush()
