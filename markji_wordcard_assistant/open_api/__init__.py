@@ -8,7 +8,7 @@ logger.setLevel(logging.INFO)
 
 # 设置日志格式
 formatter = logging.Formatter(
-    "%(levelname)s:     %(asctime)s %(module)s-%(funcName)s-line:%(lineno)d\t%(message)s"
+    "%(levelname)s  %(asctime)s %(module)s-%(funcName)s-line:%(lineno)d %(message)s"
 )
 
 # 输出到控制台
