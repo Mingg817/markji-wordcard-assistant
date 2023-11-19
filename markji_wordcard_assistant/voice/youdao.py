@@ -1,6 +1,7 @@
 import tempfile
 
 
+@DeprecationWarning
 def tts(word: str, *, types: int = 1):
     import requests
 

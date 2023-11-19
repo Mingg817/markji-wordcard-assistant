@@ -12,6 +12,7 @@ async def tts(text: str, *,
               elevenlab_token: str = "",
               voice: str = 'Adam',
               model: str = Literal["eleven_multilingual_v2", "eleven_monolingual_v1"],
+              **kwargs
               ):
     logging.info(f"使用ElevenLab TTS: {text}")
     if elevenlab_token == "":

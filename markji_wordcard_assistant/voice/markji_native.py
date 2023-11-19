@@ -1,8 +1,10 @@
 import json
 import os
+
 import requests
 
 
+@DeprecationWarning
 def tts(text: str, locale: str = "en-GB"):
     token = os.getenv("MARKJI_TOKEN")
     if token is None:

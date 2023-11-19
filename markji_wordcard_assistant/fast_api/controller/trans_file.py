@@ -3,9 +3,30 @@ from fastapi import APIRouter, UploadFile, BackgroundTasks
 from markji_wordcard_assistant.fast_api import service
 from markji_wordcard_assistant.fast_api.controller.result import R
 from markji_wordcard_assistant.fast_api.jobs import *
-from markji_wordcard_assistant.voice import openai_tts, edge
+from markji_wordcard_assistant.voice import openai_tts, edge, elevenlab
 
 router = APIRouter()
+
+
+@router.put("/edgetts")
+async def edgetts(
+        file: UploadFile,
+        background_tasks: BackgroundTasks,
+        markji_token: str,
+        voice: Literal["en-GB-LibbyNeural", "en-GB-RyanNeural", "en-GB-SoniaNeural",
+        "en-GB-SoniaNeural", "en-GB-ThomasNeural",
+        "en-US-AriaNeural", "en-US-ChristopherNeural", "en-US-EricNeural",
+        "en-US-GuyNeural", "en-US-JennyNeural", "en-US-RogerNeural", "en-US-SteffanNeural"] = 'random',
+        rate: float = 1.0
+):
+    j = new_job(job_func=service.trans_file,
+                upload_file=file,
+                tts_func=edge.tts,
+                markji_token=markji_token,
+                voice=voice,
+                rate=rate)
+    background_tasks.add_task(j.start)
+    return R.success({'job_id': j.uid})
 
 
 @router.put("/openai")
@@ -31,23 +52,21 @@ async def openai(
     background_tasks.add_task(j.start)
     return R.success({'job_id': j.uid})
 
-
-@router.put("/edgetts")
-async def edgetts(
+@router.put("/elevenlab")
+async def openai(
         file: UploadFile,
         background_tasks: BackgroundTasks,
         markji_token: str,
-        voice: Literal["en-GB-LibbyNeural", "en-GB-RyanNeural", "en-GB-SoniaNeural",
-        "en-GB-SoniaNeural", "en-GB-ThomasNeural",
-        "en-US-AriaNeural", "en-US-ChristopherNeural", "en-US-EricNeural",
-        "en-US-GuyNeural", "en-US-JennyNeural", "en-US-RogerNeural", "en-US-SteffanNeural"] = 'random',
-        rate: float = 1.0
+        elevenlab_token: str = "",
+        voice: str = 'Adam',
+        model: str = Literal["eleven_multilingual_v2", "eleven_monolingual_v1"],
 ):
     j = new_job(job_func=service.trans_file,
                 upload_file=file,
-                tts_func=edge.tts,
+                tts_func=elevenlab.tts,
                 markji_token=markji_token,
+                elevenlab_token=elevenlab_token,
                 voice=voice,
-                rate=rate)
+                model=model,)
     background_tasks.add_task(j.start)
     return R.success({'job_id': j.uid})
