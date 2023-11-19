@@ -1,5 +1,6 @@
-import os
+import logging
 import tempfile
+from typing import Literal
 
 import dotenv
 import elevenlabs
@@ -7,12 +8,19 @@ import elevenlabs
 dotenv.load_dotenv()
 
 
-def tts(text: str):
-    elevenlabs.set_api_key(os.getenv("ELEVEN_API_KEY"))
+async def tts(text: str, *,
+              elevenlab_token: str = "",
+              voice: str = 'Adam',
+              model: str = Literal["eleven_multilingual_v2", "eleven_monolingual_v1"],
+              ):
+    logging.info(f"使用ElevenLab TTS: {text}")
+    if elevenlab_token == "":
+        raise ValueError("elevenlab_token is empty")
+    elevenlabs.set_api_key(elevenlab_token)
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as file:
         b = elevenlabs.generate(
             text=text,
-            voice="Adam",
+            voice=voice,
             # voice=elevenlabs.Voice(
             #     voice_id='pNInz6obpgDQGcFmaJgB',
             #     name="Adam",
@@ -23,7 +31,7 @@ def tts(text: str):
             #         use_speaker_boost=True,
             #     )
             # ),
-            model="eleven_multilingual_v2",
+            model=model,
         )
 
         file.write(b)

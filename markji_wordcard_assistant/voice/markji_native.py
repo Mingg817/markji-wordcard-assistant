@@ -3,7 +3,7 @@ import os
 import requests
 
 
-def tts(word: str, locale: str = "en-GB"):
+def tts(text: str, locale: str = "en-GB"):
     token = os.getenv("MARKJI_TOKEN")
     if token is None:
         raise ValueError("【错误】MARKJI_TOKEN未提供")
@@ -12,7 +12,7 @@ def tts(word: str, locale: str = "en-GB"):
     payload = json.dumps({
         "content_slices": [
             {
-                "text": word,
+                "text": text,
                 "locale": locale
             }
         ]
