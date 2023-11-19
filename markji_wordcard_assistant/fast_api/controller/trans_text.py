@@ -9,6 +9,23 @@ from .result import R
 router = APIRouter()
 
 
+@router.get("/edgetts")
+async def edgetts(
+        markji_token: str,
+        text: str,
+        voice: Literal["random", "en-GB-LibbyNeural", "en-GB-RyanNeural", "en-GB-SoniaNeural",
+        "en-GB-SoniaNeural", "en-GB-ThomasNeural",
+        "en-US-AriaNeural", "en-US-ChristopherNeural", "en-US-EricNeural",
+        "en-US-GuyNeural", "en-US-JennyNeural", "en-US-RogerNeural", "en-US-SteffanNeural"] = 'random',
+        rate: float = 1.0
+):
+    ret = api.upload_voice(await edge.tts(text=text,
+                                          voice=voice,
+                                          rate=rate),
+                           markji_token=markji_token)
+    return R.success(ret)
+
+
 @router.get("/openai")
 async def openai(
         markji_token: str,
@@ -41,22 +58,5 @@ async def eleven_lab(
                                                elevenlab_token=eleven_token,
                                                voice=voice,
                                                model=model, ),
-                           markji_token=markji_token)
-    return R.success(ret)
-
-
-@router.get("/edgetts")
-async def edgetts(
-        markji_token: str,
-        text: str,
-        voice: Literal["random", "en-GB-LibbyNeural", "en-GB-RyanNeural", "en-GB-SoniaNeural",
-        "en-GB-SoniaNeural", "en-GB-ThomasNeural",
-        "en-US-AriaNeural", "en-US-ChristopherNeural", "en-US-EricNeural",
-        "en-US-GuyNeural", "en-US-JennyNeural", "en-US-RogerNeural", "en-US-SteffanNeural"] = 'random',
-        rate: float = 1.0
-):
-    ret = api.upload_voice(await edge.tts(text=text,
-                                          voice=voice,
-                                          rate=rate),
                            markji_token=markji_token)
     return R.success(ret)

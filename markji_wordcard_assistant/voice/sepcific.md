@@ -3,8 +3,9 @@
 接口
 
 ```python
-async def tts(text: str, *, ...):
+async def tts(text: str, *, ..., **kwargs):
     # TODO
+    return str:file_path
 ```
 
 `*`后面的参数为可选参数,

@@ -6,7 +6,7 @@ from fastapi import FastAPI, APIRouter
 from .controller import trans_file, jobs_controller, trans_text
 from .exception import *
 
-logging.info("启动OpenAPI服务")
+logging.info("启动FastApi服务")
 if os.getenv("https_proxy") == "":
     logging.warning("https_proxy为空，可能导致无法连接到OPENAI TTS服务")
 else:
