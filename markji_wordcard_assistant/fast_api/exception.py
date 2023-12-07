@@ -1,3 +1,4 @@
+import openai
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
@@ -20,3 +21,12 @@ def configure_exceptions(app):
             content=R.fail(message=exc.message,
                            data={}).model_dump()
         )
+
+    @app.exception_handler(openai.APIConnectionError)
+    async def openai_api_exception(Request, exc: Auth_exception):
+        return JSONResponse(
+            status_code=200,
+            content=R.fail(message=exc.message,
+                           data={}).model_dump()
+        )
+

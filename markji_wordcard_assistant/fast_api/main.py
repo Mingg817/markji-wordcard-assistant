@@ -1,5 +1,5 @@
 import logging
-import os
+import urllib.request
 
 from fastapi import FastAPI, APIRouter
 
@@ -7,10 +7,14 @@ from .controller import trans_file, jobs_controller, trans_text
 from .exception import *
 
 logging.info("启动FastApi服务")
-if os.getenv("https_proxy", "") == "":
-    logging.warning("https_proxy为空，可能导致无法连接到OPENAI TTS服务")
+logging.info(f"当前代理：{urllib.request.getproxies()}")
+try:
+    urllib.request.urlopen('https://www.google.com')
+except Exception as e:
+    logging.error("代理测试失败,请检查代理")
+    logging.error(e)
 else:
-    logging.info(f"使用代理：{os.getenv('https_proxy')}")
+    logging.info("代理测试成功")
 
 tags_metadata = [
     {
@@ -32,7 +36,7 @@ app = FastAPI(title="MarkJi WordCard Assistant",
               contact={
                   "name": "MingLi",
                   "url": "https://github.com/Mingg817",
-                  "email": "leeeming@qq.com"
+                  "email": "li@eming.ing"
               },
               license_info={
                   "name": "MIT License",

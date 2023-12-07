@@ -14,7 +14,7 @@ async def tts(text: str, *,
               = "tts-1-hd-1106",
               **kwargs
               ):
-    client = openai.OpenAI(api_key=openai_token)
+    client = openai.OpenAI(api_key=openai_token.strip())
     logging.info(f"使用OpenAI TTS: {text}")
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp_file:

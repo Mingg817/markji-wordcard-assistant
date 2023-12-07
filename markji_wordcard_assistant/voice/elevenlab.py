@@ -17,7 +17,7 @@ async def tts(text: str, *,
     logging.info(f"使用ElevenLab TTS: {text}")
     if elevenlab_token == "":
         raise ValueError("elevenlab_token is empty")
-    elevenlabs.set_api_key(elevenlab_token)
+    elevenlabs.set_api_key(elevenlab_token.strip())
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as file:
         b = elevenlabs.generate(
             text=text,

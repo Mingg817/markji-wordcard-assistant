@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.get("/progress/{uid}", tags=['jobs'])
-async def job_progress(uid: str):
+async def job_progress(uid: str) -> R:
     j = jobs.get(UUID(uid), None)
     if j is None:
         return R.fail(message="Job not found")
@@ -25,4 +25,4 @@ async def job_download(uid: str):
         return R.fail(message="Job not found")
     if j.status != "complete":
         return R.fail(message="Job not complete")
-    return FileResponse(path=j.result, filename=j.uid.hex + ".txt")
+    return FileResponse(path=j.result, filename=j.uid.hex + ".txt", media_type="text/plain")

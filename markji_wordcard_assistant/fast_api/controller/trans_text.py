@@ -18,7 +18,7 @@ async def edgetts(
         "en-US-AriaNeural", "en-US-ChristopherNeural", "en-US-EricNeural",
         "en-US-GuyNeural", "en-US-JennyNeural", "en-US-RogerNeural", "en-US-SteffanNeural"] = 'random',
         rate: float = 1.0
-):
+) -> R:
     ret = api.upload_voice(await edge.tts(text=text,
                                           voice=voice,
                                           rate=rate),

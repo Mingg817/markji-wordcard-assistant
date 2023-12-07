@@ -18,7 +18,7 @@ async def edgetts(
         "en-US-AriaNeural", "en-US-ChristopherNeural", "en-US-EricNeural",
         "en-US-GuyNeural", "en-US-JennyNeural", "en-US-RogerNeural", "en-US-SteffanNeural"] = 'random',
         rate: float = 1.0
-):
+)-> R:
     j = new_job(job_func=service.trans_file,
                 upload_file=file,
                 tts_func=edge.tts,
@@ -40,7 +40,7 @@ async def openai(
         model: Literal["tts-1", "tts-1-hd", "tts-1-1106", "tts-1-hd-1106"]
         = "tts-1-hd-1106",
         rate: float = 1.0,
-):
+) -> R:
     j = new_job(job_func=service.trans_file,
                 upload_file=file,
                 tts_func=openai_tts.tts,
@@ -52,6 +52,7 @@ async def openai(
     background_tasks.add_task(j.start)
     return R.success({'job_id': j.uid})
 
+
 @router.put("/elevenlab")
 async def openai(
         file: UploadFile,
@@ -60,13 +61,13 @@ async def openai(
         elevenlab_token: str = "",
         voice: str = 'Adam',
         model: str = Literal["eleven_multilingual_v2", "eleven_monolingual_v1"],
-):
+) -> R:
     j = new_job(job_func=service.trans_file,
                 upload_file=file,
                 tts_func=elevenlab.tts,
                 markji_token=markji_token,
                 elevenlab_token=elevenlab_token,
                 voice=voice,
-                model=model,)
+                model=model, )
     background_tasks.add_task(j.start)
     return R.success({'job_id': j.uid})
